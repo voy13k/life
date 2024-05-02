@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class Life {
+public class Board {
 
     private boolean grid[/* rows */][/* cols */];
 
-    public Life(int width, int height) {
+    public Board(int width, int height) {
         // true means alive, false means dead.
         // NOTE!!! first index is row number, which is y coordinate,
         // so the cell address is grid[y][x],
