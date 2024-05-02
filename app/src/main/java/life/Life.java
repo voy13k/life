@@ -18,7 +18,11 @@ public class Life {
 
     public void seed(Cell... seeds) {
         Arrays.stream(seeds).forEach(s -> {
-            grid[s.y() - 1][s.x() - 1] = true;
+            try {
+                grid[s.y() - 1][s.x() - 1] = true;
+            } catch (ArrayIndexOutOfBoundsException e) {
+                throw new IllegalCoordinatesException(s);
+            }
         });
     }
 

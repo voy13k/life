@@ -63,10 +63,12 @@ class LifeTest {
     })
     void shouldThrowExceptionWhenCellOutsideGrid(int x, int y) {
         Life life = new Life(3, 4);
-        assertThrows(ArrayIndexOutOfBoundsException.class,
+        var exception = assertThrows(IllegalCoordinatesException.class,
                 () -> {
                     life.seed(new Cell(x, y));
                 });
+        assertEquals(x, exception.getCell().x());
+        assertEquals(y, exception.getCell().y());
     }
 
 }
