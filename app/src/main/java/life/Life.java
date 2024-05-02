@@ -1,6 +1,8 @@
 package life;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class Life {
 
@@ -12,6 +14,24 @@ public class Life {
         // so the cell address is grid[y][x],
         // could be confusing.
         grid = new boolean[height][width];
+    }
+
+    public void seed(Cell... seeds) {
+        Arrays.stream(seeds).forEach(s -> {
+            grid[s.y() - 1][s.x() - 1] = true;
+        });
+    }
+
+    public List<Cell> getLiveCells() {
+        var liveCells = new ArrayList<Cell>();
+        for (int row = 0; row < grid.length; ++row) {
+            for (int col = 0; col < grid[row].length; ++col) {
+                if (grid[row][col]) {
+                    liveCells.add(new Cell(col + 1, row + 1));
+                }
+            }
+        }
+        return liveCells;
     }
 
     @Override
