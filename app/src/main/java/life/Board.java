@@ -2,7 +2,6 @@ package life;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 public class Board {
 
@@ -16,17 +15,18 @@ public class Board {
         grid = new boolean[height][width];
     }
 
-    public void seed(Cell... seeds) {
-        Arrays.stream(seeds).forEach(s -> {
+    public void seed(String seed) {
+        Cell[] cells = Cell.parse(seed);
+        Arrays.stream(cells).forEach(c -> {
             try {
-                grid[s.y() - 1][s.x() - 1] = true;
+                grid[c.y() - 1][c.x() - 1] = true;
             } catch (ArrayIndexOutOfBoundsException e) {
-                throw new IllegalCoordinatesException(s);
+                throw new InvalidSeedException(seed);
             }
         });
     }
 
-    public List<Cell> getLiveCells() {
+    public String getLiveCells() {
         var liveCells = new ArrayList<Cell>();
         for (int row = 0; row < grid.length; ++row) {
             for (int col = 0; col < grid[row].length; ++col) {
@@ -35,7 +35,7 @@ public class Board {
                 }
             }
         }
-        return liveCells;
+        return liveCells.toString();
     }
 
     @Override

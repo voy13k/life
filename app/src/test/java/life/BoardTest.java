@@ -2,8 +2,7 @@ package life;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-
-import java.util.Arrays;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -23,52 +22,39 @@ class BoardTest {
     }
 
     @Test
-    void shouldRetrunNoboardCellsIfNotSeeded() {
+    void shouldRetrunNoLiveCellsIfNotSeeded() {
         Board board = new Board(3, 4);
-        assertEquals(0, board.getLiveCells().size());
+        assertEquals("[]", board.getLiveCells());
     }
 
     @Test
     void shouldReturnSeededCells() {
         Board board = new Board(3, 4);
-        board.seed(
-                new Cell(3, 2),
-                new Cell(1, 3));
-        assertEquals(
-                Arrays.asList(
-                        new Cell(3, 2),
-                        new Cell(1, 3)),
-                board.getLiveCells());
+        board.seed("[[3,2],[1,3]]");
+        assertEquals("[[3, 2], [1, 3]]", board.getLiveCells());
     }
 
     @Test
     void shouldOrderByRowFirst() {
         Board board = new Board(3, 4);
-        board.seed(
-                new Cell(1, 3),
-                new Cell(3, 2));
-        assertEquals(
-                Arrays.asList(
-                        new Cell(3, 2),
-                        new Cell(1, 3)),
-                board.getLiveCells());
+        board.seed("[[1,3],[3,2]]");
+        assertEquals("[[3, 2], [1, 3]]", board.getLiveCells());
     }
 
     @ParameterizedTest()
     @CsvSource({
-            "0, 1",
-            "4, 1",
-            "1, 0",
-            "1, 5"
+            "[[0, 1]]",
+            "[[4, 1]]",
+            "[[1, 0]]",
+            "[[1, 5]]"
     })
-    void shouldThrowExceptionWhenCellOutsideGrid(int x, int y) {
+    void shouldThrowExceptionWhenCellOutsideGrid(String seed) {
         Board board = new Board(3, 4);
-        var exception = assertThrows(IllegalCoordinatesException.class,
+        var exception = assertThrows(InvalidSeedException.class,
                 () -> {
-                    board.seed(new Cell(x, y));
+                    board.seed(seed);
                 });
-        assertEquals(x, exception.getCell().x());
-        assertEquals(y, exception.getCell().y());
+        assertTrue(exception.getMessage().contains(seed));
     }
 
 }
