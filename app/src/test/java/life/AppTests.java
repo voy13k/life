@@ -34,7 +34,7 @@ public class AppTests {
     @Test
     void shouldRequireSeed() {
         main();
-        assertErr("USAGE");
+        assertErr("expected");
     }
 
     @Test

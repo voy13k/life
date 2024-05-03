@@ -2,19 +2,20 @@ package life;
 
 public class App {
 
+    private static final int REQUIRED_BOARD_SIZE = 200;
+
     public static void main(String[] args) {
-        String error = "USAGE:";
+        Board board = new Board(REQUIRED_BOARD_SIZE, REQUIRED_BOARD_SIZE);
         try {
-            if (args.length > 0) {
-                Board board = new Board(200, 200);
-                board.seed(String.join(" ", args));
-                System.out.println(board.getLiveCells());
-                return;
-            }
-        } catch (InvalidSeedException e) {
-            error = e.getMessage();
+            board.seed(String.join(" ", args));
+        } catch (IlegalSeedException e) {
+            System.err.printf(
+                    "%s Coordinates expected in the form of \"[[m,n],[o,p],...]\" wthin the 1..%d range.",
+                    e.getMessage(),
+                    REQUIRED_BOARD_SIZE);
+            return;
         }
-        System.err.println(error + " Coordinates expected in the form of \"[[m,n],[o,p],...]\"");
+        System.out.printf("%s%n", board.getLiveCells());
     }
 
 }

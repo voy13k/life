@@ -47,9 +47,9 @@ public class Board {
         return builder.toString();
     }
 
-    class OutOfRangeException extends InvalidSeedException {
+    class OutOfRangeException extends IlegalSeedException {
         public OutOfRangeException(String seed, Cell cell) {
-            super(seed + " out of range cell " + cell);
+            super("\"" + seed + "\", out of range cell " + cell);
         }
     }
 

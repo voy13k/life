@@ -34,7 +34,7 @@ public class CellTests {
     })
     @NullSource
     void parseShouldThrowExceptionForInvalidInput(String seed) {
-        var exception = assertThrows(InvalidSeedException.class, () -> {
+        var exception = assertThrows(IlegalSeedException.class, () -> {
             Cell.parse(seed);
         });
         assertTrue(exception.getMessage().contains("" + seed));
