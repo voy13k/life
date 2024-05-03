@@ -30,7 +30,10 @@ public class CellTests {
             "[[1, blah]]",
             "[[1, 2, 3]]",
             "[[1, 2], [1]]",
-            "[[1, 2], [1,2,3]]" })
+            "[[1, 2], [1, 2, 3]]",
+            "[[1, 2]  [3, 4]]",
+            "[[1, 2]]  [[3, 4]]"
+         })
     void parseShouldThrowExceptionForInvalidInput(String seed) {
         var exception = assertThrows(InvalidSeedException.class, () -> {
             Cell.parse(seed);
@@ -43,8 +46,8 @@ public class CellTests {
             "[[2,4],[3,1],[2,5]]",
             " [ [ 2, 4 ] , [ 3 , 1 ] , [ 2 , 5 ] ] "
     })
-    void shouldAllowSparseArrayOfArrays() {
-        Cell[] cells = Cell.parse("[[2,4], [3,1], [2,5]]");
+    void shouldIgnoreSpaces(String seed) {
+        Cell[] cells = Cell.parse(seed);
         assertEquals(3, cells.length);
         assertEquals("[2, 4]", cells[0].toString());
         assertEquals("[3, 1]", cells[1].toString());
