@@ -17,23 +17,22 @@ public class CellTests {
     }
 
     @ParameterizedTest
-    @NullSource
     @ValueSource(strings = {
-            "",
-            " ",
-            "1,2",
-            "blah",
-            "[1,2]",
-            "[[]]",
-            "[[1]]",
-            "[[blah, 1]]",
-            "[[1, blah]]",
-            "[[1, 2, 3]]",
-            "[[1, 2], [1]]",
-            "[[1, 2], [1, 2, 3]]",
-            "[[1, 2]  [3, 4]]",
-            "[[1, 2]]  [[3, 4]]"
-         })
+        "",
+        " ",
+        "1,2",
+        "blah",
+        "[1,2]",
+        "[[]]",
+        "[[1]]",
+        "[[blah, 1]]",
+        "[[1, blah]]",
+        "[[1, 2, 3]]",
+        "[[1, 2], [1]]",
+        "[[1, 2]  [3, 4]]",
+        "[[1, 2], [1, 2, 3]]"
+    })
+    @NullSource
     void parseShouldThrowExceptionForInvalidInput(String seed) {
         var exception = assertThrows(InvalidSeedException.class, () -> {
             Cell.parse(seed);

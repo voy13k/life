@@ -35,6 +35,6 @@ public record Cell(int x, int y) {
 
 class InvalidSeedException extends RuntimeException {
     public InvalidSeedException(String seed) {
-        super(String.format("Invalid input '%s'. Coordinates of the form [[n,o],[p,q]...] expected.", seed));
+        super(String.format("Invalid input '%s'.", seed));
     }
 }

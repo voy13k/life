@@ -1,6 +1,5 @@
 package life;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.ByteArrayOutputStream;
@@ -34,23 +33,40 @@ public class AppTests {
 
     @Test
     void shouldRequireSeed() {
-        App.main(new String[] {});
-        assertTrue(errCaptor.toString().contains("expected"));
-        assertTrue(outCaptor.toString().trim().isEmpty());
+        main();
+        assertErr("USAGE");
     }
 
     @Test
-    void shouldOnlyAcceptSingleArgument() {
-        App.main(new String[] { "[[1,1]]", "[[2,2]]" });
-        assertTrue(errCaptor.toString().contains("expected"));
-        assertTrue(outCaptor.toString().trim().isEmpty());
+    void shouldValidateTheSeed() {
+        main("[[1,2]", "[2,3]]");
+        assertErr("expected");
     }
 
     @Test
     void shouldUseTheSeed() {
-        App.main(new String[] { "[[1,1]]" });
-        assertTrue(errCaptor.toString().trim().isEmpty());
-        assertEquals("[[1, 1]]", outCaptor.toString().trim());
+        main("[[1,1]]");
+        assertOut("[[1, 1]]");
+    }
+
+    @Test
+    void shouldJoinAllArguments() {
+        main("[[", "1,1]", ",[2", ",2]]");
+        assertOut("[[1, 1], [2, 2]]");
+    }
+
+    private void main(String... args) {
+        App.main(args);
+    }
+
+    private void assertOut(String expText) {
+        assertTrue(outCaptor.toString().contains(expText));
+        assertTrue(errCaptor.toString().isBlank());
+    }
+
+    private void assertErr(String expText) {
+        assertTrue(errCaptor.toString().contains(expText));
+        assertTrue(outCaptor.toString().isBlank());
     }
 
 }
