@@ -6,7 +6,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.ValueSource;
+
+import life.Board.OutOfRangeException;
 
 class BoardTest {
 
@@ -42,7 +44,7 @@ class BoardTest {
     }
 
     @ParameterizedTest()
-    @CsvSource({
+    @ValueSource(strings = {
             "[[0, 1]]",
             "[[4, 1]]",
             "[[1, 0]]",
@@ -50,7 +52,7 @@ class BoardTest {
     })
     void shouldThrowExceptionWhenCellOutsideGrid(String seed) {
         Board board = new Board(3, 4);
-        var exception = assertThrows(InvalidSeedException.class,
+        var exception = assertThrows(OutOfRangeException.class,
                 () -> {
                     board.seed(seed);
                 });

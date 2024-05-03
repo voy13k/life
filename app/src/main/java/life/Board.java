@@ -21,7 +21,7 @@ public class Board {
             try {
                 grid[c.y() - 1][c.x() - 1] = true;
             } catch (ArrayIndexOutOfBoundsException e) {
-                throw new InvalidSeedException(seed);
+                throw new OutOfRangeException(seed, c);
             }
         });
     }
@@ -45,6 +45,12 @@ public class Board {
             builder.append(Arrays.toString(row) + '\n');
         });
         return builder.toString();
+    }
+
+    class OutOfRangeException extends InvalidSeedException {
+        public OutOfRangeException(String seed, Cell cell) {
+            super(seed + " out of range cell " + cell);
+        }
     }
 
 }
