@@ -17,7 +17,11 @@ public class Board {
         this.width = width;
         this.height = height;
 
-        grid = new boolean[height][width];
+        grid = newGrid();
+    }
+
+    private boolean[][] newGrid() {
+        return new boolean[height][width];
     }
 
     /**
@@ -58,17 +62,67 @@ public class Board {
      */
     public String getLiveCells() {
         var liveCells = new ArrayList<Cell>();
-        for (int row = 0; row < grid.length; ++row) {
-            for (int col = 0; col < grid[row].length; ++col) {
-                if (grid[row][col]) {
-                    liveCells.add(new Cell(col, row));
-                }
+        walkTheGrid((alive, x, y) -> {
+            if (alive) {
+                liveCells.add(new Cell(x, y));
             }
-        }
+        });
         return liveCells.toString();
     }
 
+    private void walkTheGrid(GridWalker gridWalker) {
+        for (int row = 0; row < height; ++row) {
+            for (int col = 0; col < width; ++col) {
+                gridWalker.visit(grid[row][col], col, row);
+            }
+        }
+    }
+
+    private interface GridWalker {
+        void visit(boolean b, int col, int row);
+    }
+
+    /**
+     * Run once life cycle
+     */
     public void tick() {
+        // we need a fresh instance of the grid, so that as we calculate and perform the updates
+        // we don't modify the cells we haven't processed yet
+        boolean[][] newGrid = newGrid();
+
+        // this walks over the old grid
+        walkTheGrid((alive, x, y) -> {
+            switch (neighbourCount(x, y)) {
+                // we update the new grid
+                case 2 -> {
+                    newGrid[y][x] = alive;
+                }
+                case 3 -> {
+                    newGrid[y][x] = true;
+                }
+                default -> {
+                    // all other cases die, so no action, newGrid is by default dead.
+                }
+            }
+        });
+        // Only now we can "commit" all the changes at once
+        grid = newGrid;
+    }
+
+    private int neighbourCount(int x, int y) {
+        return neighbour(x - 1, y - 1)
+                + neighbour(x - 1, y)
+                + neighbour(x - 1, y + 1)
+                + neighbour(x, y - 1)
+                + neighbour(x, y + 1)
+                + neighbour(x + 1, y - 1)
+                + neighbour(x + 1, y)
+                + neighbour(x + 1, y + 1);
+    }
+
+    private int neighbour(int x, int y) {
+        return inRange(x, y) && grid[y][x] ? 1 : 0;
+
     }
 
     /**
