@@ -6,8 +6,13 @@ import java.util.Arrays;
 public class Board {
 
     private boolean grid[/* rows */][/* cols */];
+    private int width;
+    private int height;
 
     public Board(int width, int height) {
+        this.width = width;
+        this.height = height;
+
         // true means alive, false means dead.
         // NOTE!!! first index is row number, which is y coordinate,
         // so the cell address is grid[y][x],
@@ -18,11 +23,10 @@ public class Board {
     public void seed(String seed) {
         Cell[] cells = Cell.parse(seed);
         Arrays.stream(cells).forEach(c -> {
-            try {
-                grid[c.y()][c.x()] = true;
-            } catch (ArrayIndexOutOfBoundsException e) {
+            if (!inRange(c)) {
                 throw new OutOfRangeException(seed, c);
             }
+            grid[c.y()][c.x()] = true;
         });
     }
 
@@ -51,6 +55,11 @@ public class Board {
         public OutOfRangeException(String seed, Cell cell) {
             super("\"" + seed + "\", out of range cell " + cell);
         }
+    }
+
+    private boolean inRange(Cell c) {
+        return c.y() >= 0 && c.y() < height &&
+                c.x() >= 0 && c.x() < width;
     }
 
 }
