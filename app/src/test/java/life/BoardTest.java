@@ -36,20 +36,20 @@ class BoardTest {
     }
 
     @Test
-    void shouldRetrunNoLiveCellsIfNotSeeded() {
+    void getLiveCells_shouldRetrunNoLiveCellsIfNotSeeded() {
         Board board = new Board(3, 4);
         assertEquals("[]", board.getLiveCells());
     }
 
     @Test
-    void shouldReturnSeededCells() {
+    void getLiveCells_shouldReturnSeededCells() {
         Board board = new Board(3, 4);
         board.seed("[[3,2],[1,3]]");
         assertEquals("[[3, 2], [1, 3]]", board.getLiveCells());
     }
 
     @Test
-    void shouldOrderByRowFirst() {
+    void getLiveCells_shouldOrderByRowFirst() {
         Board board = new Board(3, 4);
         board.seed("[[1,3],[3,2]]");
         assertEquals("[[3, 2], [1, 3]]", board.getLiveCells());
@@ -62,7 +62,7 @@ class BoardTest {
             "[[1, 0]]",
             "[[1, 5]]"
     })
-    void shouldThrowExceptionWhenCellOutsideGrid(String seed) {
+    void seed_shouldRejectCellsOutsideGrid(String seed) {
         Board board = new Board(3, 4);
         var exception = assertThrows(OutOfRangeException.class,
                 () -> {
