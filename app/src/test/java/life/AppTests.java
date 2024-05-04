@@ -46,13 +46,19 @@ public class AppTests {
     @Test
     void shouldUseTheSeed() {
         main("[[1,1]]");
-        assertOut("[[1, 1]]");
+        assertOut(" 100: []");
     }
 
     @Test
     void shouldJoinAllArguments() {
         main("[[", "1,1]", ",[2", ",2]]");
-        assertOut("[[1, 1], [2, 2]]");
+        assertOut(" 100: []");
+    }
+
+    @Test
+    void shouldSatisfyRequirement() {
+        main("[[5, 5], [6, 5], [7, 5], [5, 6], [6, 6], [7, 6]]");
+        assertOut(" 100: [[6, 4], [5, 5], [7, 5], [5, 6], [7, 6], [6, 7]]");
     }
 
     private void main(String... args) {
