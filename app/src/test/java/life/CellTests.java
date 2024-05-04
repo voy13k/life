@@ -12,25 +12,31 @@ import org.junit.jupiter.params.provider.ValueSource;
 public class CellTests {
 
     @Test
-    void shouldProduceExpectedStringRepresentation() {
-        assertEquals("[2, 4]", new Cell(2, 4).toString());
+    void toStringShouldTranslateToOneBasedCoordinates() {
+        assertEquals("[3, 5]", new Cell(2, 4).toString());
+    }
+
+    @Test
+    void parseShouldTranslateToZeroBasedIndices() {
+        Cell[] cells = Cell.parse("[[3, 5]]");
+        assertEquals(new Cell(2, 4), cells[0]);
     }
 
     @ParameterizedTest
     @ValueSource(strings = {
-        "",
-        " ",
-        "1,2",
-        "blah",
-        "[1,2]",
-        "[[]]",
-        "[[1]]",
-        "[[blah, 1]]",
-        "[[1, blah]]",
-        "[[1, 2, 3]]",
-        "[[1, 2], [1]]",
-        "[[1, 2]  [3, 4]]",
-        "[[1, 2], [1, 2, 3]]"
+            "",
+            " ",
+            "1,2",
+            "blah",
+            "[1,2]",
+            "[[]]",
+            "[[1]]",
+            "[[blah, 1]]",
+            "[[1, blah]]",
+            "[[1, 2, 3]]",
+            "[[1, 2], [1]]",
+            "[[1, 2]  [3, 4]]",
+            "[[1, 2], [1, 2, 3]]"
     })
     @NullSource
     void parseShouldThrowExceptionForInvalidInput(String seed) {
@@ -45,7 +51,7 @@ public class CellTests {
             "[[2,4],[3,1],[2,5]]",
             " [ [ 2, 4 ] , [ 3 , 1 ] , [ 2 , 5 ] ] "
     })
-    void shouldIgnoreSpaces(String seed) {
+    void parseShouldIgnoreSpaces(String seed) {
         Cell[] cells = Cell.parse(seed);
         assertEquals(3, cells.length);
         assertEquals("[2, 4]", cells[0].toString());

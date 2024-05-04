@@ -19,7 +19,7 @@ public class Board {
         Cell[] cells = Cell.parse(seed);
         Arrays.stream(cells).forEach(c -> {
             try {
-                grid[c.y() - 1][c.x() - 1] = true;
+                grid[c.y()][c.x()] = true;
             } catch (ArrayIndexOutOfBoundsException e) {
                 throw new OutOfRangeException(seed, c);
             }
@@ -31,7 +31,7 @@ public class Board {
         for (int row = 0; row < grid.length; ++row) {
             for (int col = 0; col < grid[row].length; ++col) {
                 if (grid[row][col]) {
-                    liveCells.add(new Cell(col + 1, row + 1));
+                    liveCells.add(new Cell(col, row));
                 }
             }
         }
