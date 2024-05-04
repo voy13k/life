@@ -13,13 +13,25 @@ import life.Board.OutOfRangeException;
 class BoardTest {
 
     @Test
-    void shouldCreateDeadGridOfRightSize() {
+    void toString_shouldShowBlankGridOfRightSize() {
         Board board = new Board(3, 4);
         assertEquals("""
-                [false, false, false]
-                [false, false, false]
-                [false, false, false]
-                [false, false, false]
+                [   ]
+                [   ]
+                [   ]
+                [   ]
+                """, board.toString());
+    }
+
+    @Test
+    void toString_shouldShowLiveCells() {
+        Board board = new Board(3, 4);
+        board.seed("[[3,2],[1,3],[2,4]]");
+        assertEquals("""
+                [   ]
+                [  X]
+                [X  ]
+                [ X ]
                 """, board.toString());
     }
 

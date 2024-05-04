@@ -46,7 +46,11 @@ public class Board {
     public String toString() {
         var builder = new StringBuilder();
         Arrays.stream(grid).forEach(row -> {
-            builder.append(Arrays.toString(row) + '\n');
+            builder.append("[");
+            for (boolean c: row) {
+                builder.append(c ? "X" : " ");
+            }
+            builder.append("]\n");
         });
         return builder.toString();
     }
