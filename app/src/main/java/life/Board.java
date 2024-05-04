@@ -22,6 +22,7 @@ public class Board {
 
     /**
      * Set the provided cells alive
+     * 
      * @param seed in the form of "[[a, b], [c, d], ...]"
      */
     public void seed(String seed) {
@@ -36,7 +37,9 @@ public class Board {
 
     /**
      * Combine all living cells into one JSON array,
-     * @return a string og the form "[[a, b], [c, d], ...]" with the coordinates of the living cells
+     * 
+     * @return a string og the form "[[a, b], [c, d], ...]" with the coordinates of
+     *         the living cells
      */
     public String getLiveCells() {
         var liveCells = new ArrayList<Cell>();
@@ -54,16 +57,23 @@ public class Board {
     }
 
     /**
-     * <p>Print the state of the board, live cells represented by 'X'</p>
+     * <p>
+     * Print the state of the board, live cells represented by 'X'
+     * </p>
      * e.g. a Board(4,5) with 4 live cells:
+     * 
      * <pre>
      *[  XX ]
      *[  X  ]
      *[     ]
      *[ X   ]
-     *</pre>
-     * <p>x coordinates go left to right</p>
-     * <p>y coordinates go top to bottom,</p>
+     * </pre>
+     * <p>
+     * x coordinates go left to right
+     * </p>
+     * <p>
+     * y coordinates go top to bottom,
+     * </p>
      * the board above has live cells equal [[3,3], [4,1], [3,2], [2,4]]
      */
     @Override
