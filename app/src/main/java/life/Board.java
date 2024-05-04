@@ -35,6 +35,21 @@ public class Board {
         });
     }
 
+    private boolean inRange(Cell c) {
+        return inRange(c.x(), c.y());
+    }
+
+    private boolean inRange(int x, int y) {
+        return y >= 0 && y < height &&
+                x >= 0 && x < width;
+    }
+
+    class OutOfRangeException extends IlegalSeedException {
+        public OutOfRangeException(String seed, Cell cell) {
+            super("\"" + seed + "\", out of range cell " + cell);
+        }
+    }
+
     /**
      * Combine all living cells into one JSON array,
      * 
@@ -87,17 +102,6 @@ public class Board {
             builder.append("]\n");
         });
         return builder.toString();
-    }
-
-    class OutOfRangeException extends IlegalSeedException {
-        public OutOfRangeException(String seed, Cell cell) {
-            super("\"" + seed + "\", out of range cell " + cell);
-        }
-    }
-
-    private boolean inRange(Cell c) {
-        return c.y() >= 0 && c.y() < height &&
-                c.x() >= 0 && c.x() < width;
     }
 
 }
