@@ -12,9 +12,10 @@ import life.Board.OutOfRangeException;
 
 class BoardTest {
 
+    private Board board = new Board(4, 3);
+
     @Test
     void toString_shouldShowBlankGridOfRightSize() {
-        Board board = new Board(3, 4);
         assertEquals("""
                 [   ]
                 [   ]
@@ -25,8 +26,7 @@ class BoardTest {
 
     @Test
     void toString_shouldShowLiveCells() {
-        Board board = new Board(3, 4);
-        board.seed("[[3,2],[1,3],[2,4]]");
+        board.seed("[[2,3],[3,1],[4,2]]");
         assertEquals("""
                 [   ]
                 [  X]
@@ -37,33 +37,29 @@ class BoardTest {
 
     @Test
     void getLiveCells_shouldRetrunNoLiveCellsIfNotSeeded() {
-        Board board = new Board(3, 4);
         assertEquals("[]", board.getLiveCells());
     }
 
     @Test
     void getLiveCells_shouldReturnSeededCells() {
-        Board board = new Board(3, 4);
-        board.seed("[[3,2],[1,3]]");
-        assertEquals("[[3, 2], [1, 3]]", board.getLiveCells());
+        board.seed("[[2,3],[3,1]]");
+        assertEquals("[[2, 3], [3, 1]]", board.getLiveCells());
     }
 
     @Test
     void getLiveCells_shouldOrderByRowFirst() {
-        Board board = new Board(3, 4);
-        board.seed("[[1,3],[3,2]]");
-        assertEquals("[[3, 2], [1, 3]]", board.getLiveCells());
+        board.seed("[[3,1],[2,3]]");
+        assertEquals("[[2, 3], [3, 1]]", board.getLiveCells());
     }
 
     @ParameterizedTest()
     @ValueSource(strings = {
-            "[[0, 1]]",
-            "[[4, 1]]",
             "[[1, 0]]",
-            "[[1, 5]]"
+            "[[1, 4]]",
+            "[[0, 1]]",
+            "[[5, 1]]"
     })
     void seed_shouldRejectCellsOutsideGrid(String seed) {
-        Board board = new Board(3, 4);
         var exception = assertThrows(OutOfRangeException.class,
                 () -> {
                     board.seed(seed);

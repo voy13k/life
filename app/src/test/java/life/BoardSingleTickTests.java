@@ -25,7 +25,7 @@ public class BoardSingleTickTests {
                         "eightNeighbours",
         })
         void test(Case c) {
-                Board board = new Board(5, 4);
+                Board board = new Board(4, 5);
                 board.seed(c.seed);
                 assertEquals(c.boardBefore, board.toString());
                 board.tick();
@@ -34,7 +34,7 @@ public class BoardSingleTickTests {
 
         static Stream<Case> eightNeighbours() {
                 return Stream.of(
-                                new Case("[[2,2],[1,1],[2,1],[3,1],[3,2],[3,3],[2,3],[1,3],[1,2]]", """
+                                new Case("[[1,1],[1,2],[1,3],[2,1],[2,2],[2,3],[3,1],[3,2],[3,3]]", """
                                                 [XXX  ]
                                                 [XXX  ]
                                                 [XXX  ]
@@ -49,7 +49,7 @@ public class BoardSingleTickTests {
 
         static Stream<Case> sevenNeighbours() {
                 return Stream.of(
-                                new Case("[[2,2],[1,1],[2,1],[3,1],[3,2],[3,3],[2,3],[1,3]]", """
+                                new Case("[[1,1],[1,2],[1,3],[2,2],[2,3],[3,1],[3,2],[3,3]]", """
                                                 [XXX  ]
                                                 [ XX  ]
                                                 [XXX  ]
@@ -64,7 +64,7 @@ public class BoardSingleTickTests {
 
         static Stream<Case> sixNeighbours() {
                 return Stream.of(
-                                new Case("[[2,2],[1,1],[2,1],[3,1],[3,2],[3,3],[2,3]]", """
+                                new Case("[[1,1],[1,2],[1,3],[2,2],[2,3],[3,2],[3,3]]", """
                                                 [XXX  ]
                                                 [ XX  ]
                                                 [ XX  ]
@@ -79,7 +79,7 @@ public class BoardSingleTickTests {
 
         static Stream<Case> fiveNeighbours() {
                 return Stream.of(
-                                new Case("[[2,2],[1,1],[2,1],[3,1],[3,2],[3,3]]", """
+                                new Case("[[1,1],[1,2],[1,3],[2,2],[2,3],[3,3]]", """
                                                 [XXX  ]
                                                 [ XX  ]
                                                 [  X  ]
@@ -94,7 +94,7 @@ public class BoardSingleTickTests {
 
         static Stream<Case> fourNeighbours() {
                 return Stream.of(
-                                new Case("[[2,2],[1,1],[2,1],[3,1],[3,2]]", """
+                                new Case("[[1,1],[1,2],[1,3],[2,2],[2,3]]", """
                                                 [XXX  ]
                                                 [ XX  ]
                                                 [     ]
@@ -109,7 +109,7 @@ public class BoardSingleTickTests {
 
         static Stream<Case> threeNeighbours() {
                 return Stream.of(
-                                new Case("[[2,2],[1,1],[2,1],[3,1]]", """
+                                new Case("[[1,1],[1,2],[1,3],[2,2]]", """
                                                 [XXX  ]
                                                 [ X   ]
                                                 [     ]
@@ -120,7 +120,7 @@ public class BoardSingleTickTests {
                                                 [     ]
                                                 [     ]
                                                 """),
-                                new Case("[[2,2],[1,1],[2,1],[3,2]]", """
+                                new Case("[[1,1],[1,2],[2,2],[2,3]]", """
                                                 [XX   ]
                                                 [ XX  ]
                                                 [     ]
@@ -131,7 +131,7 @@ public class BoardSingleTickTests {
                                                 [     ]
                                                 [     ]
                                                 """),
-                                new Case("[[2,2],[1,1],[2,1],[3,3]]", """
+                                new Case("[[1,1],[1,2],[2,2],[3,3]]", """
                                                 [XX   ]
                                                 [ X   ]
                                                 [  X  ]
@@ -142,7 +142,7 @@ public class BoardSingleTickTests {
                                                 [     ]
                                                 [     ]
                                                 """),
-                                new Case("[[2,2],[1,1],[2,1],[2,3]]", """
+                                new Case("[[1,1],[1,2],[2,2],[3,2]]", """
                                                 [XX   ]
                                                 [ X   ]
                                                 [ X   ]
@@ -153,7 +153,7 @@ public class BoardSingleTickTests {
                                                 [     ]
                                                 [     ]
                                                 """),
-                                new Case("[[2,2],[1,1],[2,1],[1,3]]", """
+                                new Case("[[1,1],[1,2],[2,2],[3,1]]", """
                                                 [XX   ]
                                                 [ X   ]
                                                 [X    ]
@@ -164,7 +164,7 @@ public class BoardSingleTickTests {
                                                 [     ]
                                                 [     ]
                                                 """),
-                                new Case("[[2,2],[1,1],[2,1],[1,2]]", """
+                                new Case("[[1,1],[1,2],[2,1],[2,2]]", """
                                                 [XX   ]
                                                 [XX   ]
                                                 [     ]
@@ -179,7 +179,7 @@ public class BoardSingleTickTests {
 
         static Stream<Case> twoNeighbours() {
                 return Stream.of(
-                                new Case("[[2,2],[1,1],[2,1]]", """
+                                new Case("[[1,1],[1,2],[2,2]]", """
                                                 [XX   ]
                                                 [ X   ]
                                                 [     ]
@@ -190,7 +190,7 @@ public class BoardSingleTickTests {
                                                 [     ]
                                                 [     ]
                                                 """),
-                                new Case("[[2,2],[1,1],[3,1]]", """
+                                new Case("[[1,1],[1,3],[2,2]]", """
                                                 [X X  ]
                                                 [ X   ]
                                                 [     ]
@@ -201,7 +201,7 @@ public class BoardSingleTickTests {
                                                 [     ]
                                                 [     ]
                                                 """),
-                                new Case("[[2,2],[1,1],[3,2]]", """
+                                new Case("[[1,1],[2,2],[2,3]]", """
                                                 [X    ]
                                                 [ XX  ]
                                                 [     ]
@@ -212,7 +212,7 @@ public class BoardSingleTickTests {
                                                 [     ]
                                                 [     ]
                                                 """),
-                                new Case("[[2,2],[1,1],[3,3]]", """
+                                new Case("[[1,1],[2,2],[3,3]]", """
                                                 [X    ]
                                                 [ X   ]
                                                 [  X  ]
@@ -223,7 +223,7 @@ public class BoardSingleTickTests {
                                                 [     ]
                                                 [     ]
                                                 """),
-                                new Case("[[2,2],[1,1],[2,3]]", """
+                                new Case("[[1,1],[2,2],[3,2]]", """
                                                 [X    ]
                                                 [ X   ]
                                                 [ X   ]
@@ -234,7 +234,7 @@ public class BoardSingleTickTests {
                                                 [     ]
                                                 [     ]
                                                 """),
-                                new Case("[[2,2],[1,1],[1,3]]", """
+                                new Case("[[1,1],[2,2],[3,1]]", """
                                                 [X    ]
                                                 [ X   ]
                                                 [X    ]
@@ -245,7 +245,7 @@ public class BoardSingleTickTests {
                                                 [     ]
                                                 [     ]
                                                 """),
-                                new Case("[[2,2],[1,1],[1,2]]", """
+                                new Case("[[1,1],[2,1],[2,2]]", """
                                                 [X    ]
                                                 [XX   ]
                                                 [     ]
@@ -260,7 +260,7 @@ public class BoardSingleTickTests {
 
         static Stream<Case> oneNeighbour() {
                 return Stream.of(
-                                new Case("[[2,2], [1,1]]", """
+                                new Case("[[1,1],[2,2]]", """
                                                 [X    ]
                                                 [ X   ]
                                                 [     ]
@@ -271,7 +271,7 @@ public class BoardSingleTickTests {
                                                 [     ]
                                                 [     ]
                                                 """),
-                                new Case("[[2,2], [2,1]]", """
+                                new Case("[[1,2],[2,2]]", """
                                                 [ X   ]
                                                 [ X   ]
                                                 [     ]
@@ -282,7 +282,7 @@ public class BoardSingleTickTests {
                                                 [     ]
                                                 [     ]
                                                 """),
-                                new Case("[[2,2], [3,1]]", """
+                                new Case("[[1,3],[2,2]]", """
                                                 [  X  ]
                                                 [ X   ]
                                                 [     ]
@@ -293,7 +293,7 @@ public class BoardSingleTickTests {
                                                 [     ]
                                                 [     ]
                                                 """),
-                                new Case("[[2,2], [3,2]]", """
+                                new Case("[[2,2], [2,3]]", """
                                                 [     ]
                                                 [ XX  ]
                                                 [     ]
@@ -315,7 +315,7 @@ public class BoardSingleTickTests {
                                                 [     ]
                                                 [     ]
                                                 """),
-                                new Case("[[2,2], [2,3]]", """
+                                new Case("[[2,2], [3,2]]", """
                                                 [     ]
                                                 [ X   ]
                                                 [ X   ]
@@ -326,7 +326,7 @@ public class BoardSingleTickTests {
                                                 [     ]
                                                 [     ]
                                                 """),
-                                new Case("[[2,2], [1,3]]", """
+                                new Case("[[2,2], [3,1]]", """
                                                 [     ]
                                                 [ X   ]
                                                 [X    ]
@@ -337,7 +337,7 @@ public class BoardSingleTickTests {
                                                 [     ]
                                                 [     ]
                                                 """),
-                                new Case("[[2,2], [1,2]]", """
+                                new Case("[[2,1], [2,2]]", """
                                                 [     ]
                                                 [XX   ]
                                                 [     ]
