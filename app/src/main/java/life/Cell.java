@@ -3,17 +3,15 @@ package life;
 import java.util.ArrayList;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 
 /**
  * <p>
- * Translates between input / output coordinates representation (1-based
- * coordinates)
- * and internal representation (0 - based array indexes).
+ * Converts between in / out coordinate representation (1-based coordinates)
+ * and internal representation (0-based array indexes).
  * </p>
  * 
- * The {@link #parse(String)} translates input to internal,
- * the {@link #toString()} translates internal to output.
+ * The {@link #parse(String)} converts input to internal,
+ * the {@link #toString()} converts internal to output.
  */
 public record Cell(int row, int col) {
 
@@ -26,15 +24,16 @@ public record Cell(int row, int col) {
      * parse("[[1, 3], [3, 4]]")
      * </pre>
      * 
-     * =>
+     * results in
      * 
      * <pre>
-     * Cell[] arr = { Cell(0, 2), Cell(2, 3) }
+     * new Cell[] { Cell(0, 2), Cell(2, 3) }
      * </pre>
      * 
-     * @param seed JSON like array of arrays, e.g. "[[1, 3], [3, 4]]"
-     * @return array of Cell objects with 0 based row/col coordinates, e.g. {
-     *         Cell(0, 2), Cell(2, 3) },
+     * @param seed JSON like array of arrays, e.g. "[[1, 3], [3, 4]]", 1-based coord
+     *             pairs
+     * @return array of Cell objects with 0 based coords,
+     *         e.g. { Cell(0, 2), Cell(2, 3) }
      */
     public static Cell[] parse(String seed) {
         var cells = new ArrayList<Cell>();
@@ -56,10 +55,10 @@ public record Cell(int row, int col) {
         return cells.toArray(Cell[]::new);
     }
 
-    @Override
     /**
      * Produce "[row + 1, col + 1]" output coordinate tuple
      */
+    @Override
     public final String toString() {
         return String.format("[%d, %d]", row + 1, col + 1);
     }

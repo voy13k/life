@@ -7,6 +7,10 @@ import java.util.stream.Stream;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
+/**
+ * Not an exhaustive set of test cases, but a decent representation
+ * to give us a reasonable confidence.
+ */
 public class BoardSingleTickTests {
 
         record Case(String seed, String boardBefore, String expextedBoardAfter) {

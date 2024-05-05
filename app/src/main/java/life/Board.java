@@ -4,22 +4,25 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
- * Construct a playboard specifying height and width.
+ * Construct a playboard specifying its height and width.
  * <p>
  * Use {@link #seed(String)} to populate it with live cells.
  * <p>
- * Invoke {@link #tick()} to run a single generation cycle.
+ * Invoke {@link #tick()} repeatedly to run the generation cycles,
+ * one generantion at a time.
  * <p>
- * Use {@link #getLiveCells()} to obtain a list of coordinates of the currently living cells.
+ * At any time, use {@link #getLiveCells()} to obtain a list of coordinates
+ * of the currently living cells.
  * <p>
- * Use {@link #toString()} for a visual rectangular representation of current state of the board.
+ * At any time, use {@link #toString()} for a visual rectangular
+ * representation of current state of the board.
  */
 public class Board {
 
     // true means alive, false means dead.
     private boolean grid[/* rows */][/* cols */];
 
-    // handy for inRange checks
+    // handy later for inRange checks
     private int rows;
     private int cols;
 
@@ -63,9 +66,9 @@ public class Board {
     }
 
     /**
-     * Combine all living cells into one JSON array,
+     * Combine all living cells into a JSON array string.
      * 
-     * @return a string og the form "[[a, b], [c, d], ...]" with the coordinates of
+     * @return a string of the form "[[a, b], [c, d], ...]" with the coordinates of
      *         the living cells
      */
     public String getLiveCells() {
@@ -97,7 +100,7 @@ public class Board {
     }
 
     /**
-     * Run once life cycle
+     * Run one life cycle
      */
     public void tick() {
         // we need a fresh instance of the grid, so that as we calculate
@@ -106,16 +109,15 @@ public class Board {
 
         walkGridRange((row, col) -> {
             switch (neighbourCount(row, col)) {
-                // we update the new grid
                 case 2 -> {
+                    // alive stays alive, dead stays dead
                     newGrid[row][col] = grid[row][col];
                 }
                 case 3 -> {
+                    // alive stays alive, dead becomes alive
                     newGrid[row][col] = true;
                 }
-                default -> {
-                    // all other cases die, so no action, newGrid is by default dead.
-                }
+                // all other cases die, so no action, newGrid cells are dead by default.
             }
         });
         // Only now we can "commit" all the changes at once
@@ -135,23 +137,21 @@ public class Board {
 
     private int neighbour(int row, int col) {
         return inRange(row, col) && grid[row][col] ? 1 : 0;
-
     }
 
     /**
      * <p>
-     * Print the state of the board, live cells represented by 'X'
+     * Print the current state of the board as a rectangle,
+     * representing live cells by 'X'.
      * </p>
-     * e.g. a Board(4,5) with 4 live cells:
-     * 
+     * e.g. a Board(4,5) with 4 live cells [[1,3], [1,4], [2,3], [4,2]]:
+     * will produce
      * <pre>
      *[  XX ]
      *[  X  ]
      *[     ]
      *[ X   ]
      * </pre>
-     * 
-     * This board above has live cells equal [[1,3], [1,4], [2,3], [4,2]]
      */
     @Override
     public String toString() {
