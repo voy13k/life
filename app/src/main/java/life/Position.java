@@ -13,11 +13,11 @@ import org.json.JSONArray;
  * The {@link #parse(String)} converts input to internal,
  * the {@link #toString()} converts internal to output.
  */
-public record Cell(int row, int col) {
+public record Position(int row, int col) {
 
     /**
      * Convert the input string containing 1-based coordinate pairs
-     * into an array of Cells with 0-based coordinates.
+     * into an array of Positions with 0-based coordinates.
      * E.g.
      * 
      * <pre>
@@ -27,16 +27,16 @@ public record Cell(int row, int col) {
      * results in
      * 
      * <pre>
-     * new Cell[] { Cell(0, 2), Cell(2, 3) }
+     * new Position[] { Position(0, 2), Position(2, 3) }
      * </pre>
      * 
      * @param seed JSON like array of arrays, e.g. "[[1, 3], [3, 4]]", 1-based coord
      *             pairs
-     * @return array of Cell objects with 0 based coords,
-     *         e.g. { Cell(0, 2), Cell(2, 3) }
+     * @return array of Position objects with 0 based coords,
+     *         e.g. { Position(0, 2), Position(2, 3) }
      */
-    public static Cell[] parse(String seed) {
-        var cells = new ArrayList<Cell>();
+    public static Position[] parse(String seed) {
+        var positions = new ArrayList<Position>();
         try {
             new JSONArray(seed).forEach(s -> {
                 if (!(s instanceof JSONArray coords)) {
@@ -47,12 +47,12 @@ public record Cell(int row, int col) {
                 }
                 int parsedRow = coords.getInt(0);
                 int parsedCol = coords.getInt(1);
-                cells.add(new Cell(parsedRow - 1, parsedCol - 1));
+                positions.add(new Position(parsedRow - 1, parsedCol - 1));
             });
         } catch (Exception e) {
             throw new IlegalSeedException(seed, e);
         }
-        return cells.toArray(Cell[]::new);
+        return positions.toArray(Position[]::new);
     }
 
     /**
@@ -60,7 +60,7 @@ public record Cell(int row, int col) {
      */
     @Override
     public final String toString() {
-        return String.format("[%d, %d]", row + 1, col + 1);
+        return new JSONArray(new int[] { row + 1, col + 1 }).toString();
     }
 }
 

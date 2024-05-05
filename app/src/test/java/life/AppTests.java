@@ -46,7 +46,7 @@ public class AppTests {
     @Test
     void shouldUseTheSeed() {
         main("[[1, 1], [1, 2], [2, 1]]");
-        assertOut(" 100: [[1, 1], [1, 2], [2, 1], [2, 2]]");
+        assertOut(" 100: [[1,1], [1,2], [2,1], [2,2]]");
     }
 
     @Test
@@ -57,13 +57,13 @@ public class AppTests {
                 " [1,2], [",
                 "2,1], [2,2",
                 "]]");
-        assertOut(" 100: [[1, 1], [1, 2], [2, 1], [2, 2]]");
+        assertOut(" 100: [[1,1], [1,2], [2,1], [2,2]]");
     }
 
     @Test
     void shouldSatisfySetRequirement() {
         main("[[5, 5], [6, 5], [7, 5], [5, 6], [6, 6], [7, 6]]");
-        assertOut(" 100: [[5, 5], [5, 6], [6, 4], [6, 7], [7, 5], [7, 6]]");
+        assertOut(" 100: [[5,5], [5,6], [6,4], [6,7], [7,5], [7,6]]");
     }
 
     private void main(String... args) {

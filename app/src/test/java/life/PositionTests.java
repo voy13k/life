@@ -9,17 +9,17 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
-public class CellTests {
+public class PositionTests {
 
     @Test
     void toStringShouldTranslateToOneBasedCoordinates() {
-        assertEquals("[3, 5]", new Cell(2, 4).toString());
+        assertEquals("[3,5]", new Position(2, 4).toString());
     }
 
     @Test
     void parseShouldTranslateToZeroBasedIndices() {
-        Cell[] cells = Cell.parse("[[3, 5]]");
-        assertEquals(new Cell(2, 4), cells[0]);
+        Position[] positions = Position.parse("[[3, 5]]");
+        assertEquals(new Position(2, 4), positions[0]);
     }
 
     @ParameterizedTest
@@ -41,7 +41,7 @@ public class CellTests {
     @NullSource
     void parseShouldThrowExceptionForInvalidInput(String seed) {
         var exception = assertThrows(IlegalSeedException.class, () -> {
-            Cell.parse(seed);
+            Position.parse(seed);
         });
         assertTrue(exception.getMessage().contains("" + seed));
     }
@@ -52,11 +52,11 @@ public class CellTests {
             " [ [ 2, 4 ] , [ 3 , 1 ] , [ 2 , 5 ] ] "
     })
     void parseShouldIgnoreSpaces(String seed) {
-        Cell[] cells = Cell.parse(seed);
-        assertEquals(3, cells.length);
-        assertEquals("[2, 4]", cells[0].toString());
-        assertEquals("[3, 1]", cells[1].toString());
-        assertEquals("[2, 5]", cells[2].toString());
+        Position[] positions = Position.parse(seed);
+        assertEquals(3, positions.length);
+        assertEquals("[2,4]", positions[0].toString());
+        assertEquals("[3,1]", positions[1].toString());
+        assertEquals("[2,5]", positions[2].toString());
     }
 
 }

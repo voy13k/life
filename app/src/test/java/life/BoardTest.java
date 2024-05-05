@@ -25,7 +25,7 @@ class BoardTest {
     }
 
     @Test
-    void toString_shouldShowLiveCells() {
+    void toString_shouldShowLiveCellPositions() {
         board.seed("[[2,3],[3,1],[4,2]]");
         assertEquals("""
                 [   ]
@@ -36,28 +36,28 @@ class BoardTest {
     }
 
     @Test
-    void getLiveCells_shouldRetrunNoLiveCellsIfNotSeeded() {
-        assertEquals("[]", board.getLiveCells());
+    void getLiveCellPositions_shouldRetrunNoLiveCellsIfNotSeeded() {
+        assertEquals("[]", board.getLiveCellPositions());
     }
 
     @Test
-    void getLiveCells_shouldReturnSeededCells() {
+    void getLiveCellPositions_shouldReturnSeededCells() {
         board.seed("[[2,3],[3,1]]");
-        assertEquals("[[2, 3], [3, 1]]", board.getLiveCells());
+        assertEquals("[[2,3], [3,1]]", board.getLiveCellPositions());
     }
 
     @Test
-    void getLiveCells_shouldOrderByRowFirst() {
+    void getLiveCellPositions_shouldOrderByRowFirst() {
         board.seed("[[3,1],[2,3]]");
-        assertEquals("[[2, 3], [3, 1]]", board.getLiveCells());
+        assertEquals("[[2,3], [3,1]]", board.getLiveCellPositions());
     }
 
     @ParameterizedTest()
     @ValueSource(strings = {
-            "[[1, 0]]",
-            "[[1, 4]]",
-            "[[0, 1]]",
-            "[[5, 1]]"
+            "[[1,0]]",
+            "[[1,4]]",
+            "[[0,1]]",
+            "[[5,1]]"
     })
     void seed_shouldRejectCellsOutsideGrid(String seed) {
         var exception = assertThrows(OutOfRangeException.class,
