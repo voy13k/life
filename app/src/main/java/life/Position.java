@@ -38,16 +38,16 @@ public record Position(int row, int col) {
     public static Position[] parse(String seed) {
         var positions = new ArrayList<Position>();
         try {
-            new JSONArray(seed).forEach(s -> {
-                if (!(s instanceof JSONArray coords)) {
+            new JSONArray(seed).forEach(obj -> {
+                if (!(obj instanceof JSONArray coordArr)) {
                     throw new IlegalSeedException(seed);
                 }
-                if (coords.length() != 2) {
+                if (coordArr.length() != 2) {
                     throw new IlegalSeedException(seed);
                 }
-                int parsedRow = coords.getInt(0);
-                int parsedCol = coords.getInt(1);
-                positions.add(new Position(parsedRow - 1, parsedCol - 1));
+                int inputRow = coordArr.getInt(0);
+                int inputCol = coordArr.getInt(1);
+                positions.add(new Position(inputRow - 1, inputCol - 1));
             });
         } catch (Exception e) {
             throw new IlegalSeedException(seed, e);
