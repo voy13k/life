@@ -11,10 +11,10 @@ import java.util.Arrays;
  * Invoke {@link #tick()} repeatedly to run the generation cycles,
  * one generantion at a time.
  * <p>
- * At any time, use {@link #getLiveCellPositions()} to obtain a list of coordinates
+ * At any time, use {@link #toString()} to obtain a list of coordinates
  * of the currently living cells.
  * <p>
- * At any time, use {@link #toString()} for a visual rectangular
+ * At any time, use {@link #getVisualGrid()} for a visual rectangular
  * representation of current state of the board.
  */
 public class Board {
@@ -22,7 +22,7 @@ public class Board {
     // true means alive, false means dead.
     private boolean grid[][]; // [rows][cols]
 
-    // handy later for inRange checks
+    // handy for inRange checks later
     private int rows;
     private int cols;
 
@@ -71,7 +71,8 @@ public class Board {
      * @return a string of the form "[[a, b], [c, d], ...]" with the coordinates of
      *         the living cells
      */
-    public String getLiveCellPositions() {
+    @Override
+    public String toString() {
         var livePositions = new ArrayList<Position>();
         walkGridRange((row, col) -> {
             if (grid[row][col]) {
@@ -84,10 +85,6 @@ public class Board {
     }
 
     private void walkGridRange(GridRangeWalker walker) {
-        // Because we are walking over this.grid
-        // which was constructed using this.height this.width
-        // we can use this.height and this.width for the limits
-        // as a shortcut instead of dynamic array.length
         for (int row = 0; row < this.rows; ++row) {
             for (int col = 0; col < this.cols; ++col) {
                 walker.visit(row, col);
@@ -125,17 +122,17 @@ public class Board {
     }
 
     private int neighbourCount(int row, int col) {
-        return neighbour(row - 1, col - 1)
-                + neighbour(row - 1, col)
-                + neighbour(row - 1, col + 1)
-                + neighbour(row, col - 1)
-                + neighbour(row, col + 1)
-                + neighbour(row + 1, col - 1)
-                + neighbour(row + 1, col)
-                + neighbour(row + 1, col + 1);
+        return oneIfAlive(row - 1, col - 1)
+                + oneIfAlive(row - 1, col)
+                + oneIfAlive(row - 1, col + 1)
+                + oneIfAlive(row, col - 1)
+                + oneIfAlive(row, col + 1)
+                + oneIfAlive(row + 1, col - 1)
+                + oneIfAlive(row + 1, col)
+                + oneIfAlive(row + 1, col + 1);
     }
 
-    private int neighbour(int row, int col) {
+    private int oneIfAlive(int row, int col) {
         return inRange(row, col) && grid[row][col] ? 1 : 0;
     }
 
@@ -146,6 +143,7 @@ public class Board {
      * </p>
      * e.g. a Board(4,5) with 4 live cell positions [[1,3], [1,4], [2,3], [4,2]]:
      * will produce
+     * <p/> Primarily meant to facilitate test case construction
      * 
      * <pre>
      *[  XX ]
@@ -154,8 +152,7 @@ public class Board {
      *[ X   ]
      * </pre>
      */
-    @Override
-    public String toString() {
+    String getVisualGrid() {
         var builder = new StringBuilder();
         Arrays.stream(grid).forEach(rowArr -> {
             builder.append("[");

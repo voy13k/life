@@ -34,7 +34,7 @@ public class App {
 
         IntStream.rangeClosed(1, NUMBER_OF_CYCLES).forEachOrdered(cycle -> {
             board.tick();
-            System.out.printf("%6d: %s%n", cycle, board.getLiveCellPositions());
+            System.out.printf("%6d: %s%n", cycle, board);
         });
     }
 

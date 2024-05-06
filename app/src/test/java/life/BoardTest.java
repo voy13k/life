@@ -15,41 +15,41 @@ class BoardTest {
     private Board board = new Board(4, 3);
 
     @Test
-    void toString_shouldShowBlankGridOfRightSize() {
+    void getVisualGrid_shouldShowBlankGridOfRightSize() {
         assertEquals("""
                 [   ]
                 [   ]
                 [   ]
                 [   ]
-                """, board.toString());
+                """, board.getVisualGrid());
     }
 
     @Test
-    void toString_shouldShowLiveCellPositions() {
+    void getVisualGrid_shouldShowLiveCellPositions() {
         board.seed("[[2,3],[3,1],[4,2]]");
         assertEquals("""
                 [   ]
                 [  X]
                 [X  ]
                 [ X ]
-                """, board.toString());
+                """, board.getVisualGrid());
     }
 
     @Test
-    void getLiveCellPositions_shouldRetrunNoLiveCellsIfNotSeeded() {
-        assertEquals("[]", board.getLiveCellPositions());
+    void toString_shouldRetrunNoLiveCellsIfNotSeeded() {
+        assertEquals("[]", board.toString());
     }
 
     @Test
-    void getLiveCellPositions_shouldReturnSeededCells() {
+    void toString_shouldReturnSeededCells() {
         board.seed("[[2,3],[3,1]]");
-        assertEquals("[[2,3], [3,1]]", board.getLiveCellPositions());
+        assertEquals("[[2,3], [3,1]]", board.toString());
     }
 
     @Test
-    void getLiveCellPositions_shouldOrderByRowFirst() {
+    void toString_shouldOrderByRowFirst() {
         board.seed("[[3,1],[2,3]]");
-        assertEquals("[[2,3], [3,1]]", board.getLiveCellPositions());
+        assertEquals("[[2,3], [3,1]]", board.toString());
     }
 
     @ParameterizedTest()

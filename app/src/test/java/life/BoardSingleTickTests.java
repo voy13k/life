@@ -31,9 +31,9 @@ public class BoardSingleTickTests {
         void test(Case c) {
                 Board board = new Board(4, 5);
                 board.seed(c.seed);
-                assertEquals(c.boardBefore, board.toString());
+                assertEquals(c.boardBefore, board.getVisualGrid());
                 board.tick();
-                assertEquals(c.expextedBoardAfter, board.toString());
+                assertEquals(c.expextedBoardAfter, board.getVisualGrid());
         }
 
         static Stream<Case> eightNeighbours() {
