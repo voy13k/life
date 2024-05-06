@@ -1,11 +1,15 @@
 package life;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.hasToString;
+import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
 
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullSource;
@@ -14,14 +18,13 @@ import org.junit.jupiter.params.provider.ValueSource;
 public class PositionTests {
 
     @Test
-    void toStringShouldTranslateToOneBasedCoordinates() {
-        assertEquals("[3,5]", new Position(2, 4).toString());
+    void toString_shouldTranslateToOneBasedCoordinates() {
+        assertThat(new Position(2, 4), hasToString("[3,5]"));
     }
 
     @Test
-    void parseShouldTranslateToZeroBasedIndices() {
-        List<?> positions = Position.parse("[[3, 5]]");
-        assertEquals(new Position(2, 4), positions.get(0));
+    void parse_shouldTranslateToZeroBasedIndices() {
+        assertThat(Position.parse("[[3, 5]]").get(0), is(new Position(2, 4)));
     }
 
     @ParameterizedTest
@@ -45,7 +48,7 @@ public class PositionTests {
         var exception = assertThrows(IlegalSeedException.class, () -> {
             Position.parse(seed);
         });
-        assertTrue(exception.getMessage().contains("" + seed));
+        assertThat(exception.getMessage(), containsString("" + seed /* this hack also handles testing of null seed */));
     }
 
     @ParameterizedTest
@@ -55,10 +58,10 @@ public class PositionTests {
     })
     void parseShouldIgnoreSpaces(String seed) {
         List<?> positions = Position.parse(seed);
-        assertEquals(3, positions.size());
-        assertEquals("[2,4]", positions.get(0).toString());
-        assertEquals("[3,1]", positions.get(1).toString());
-        assertEquals("[2,5]", positions.get(2).toString());
+        assertThat(positions, hasSize(3));
+        assertThat(positions.get(0), hasToString("[2,4]"));
+        assertThat(positions.get(1), hasToString("[3,1]"));
+        assertThat(positions.get(2), hasToString("[2,5]"));
     }
 
 }

@@ -1,6 +1,7 @@
 package life;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
 
 import java.util.stream.Stream;
 
@@ -28,12 +29,14 @@ public class BoardSingleTickTests {
                         "sevenNeighbours",
                         "eightNeighbours",
         })
-        void test(Case c) {
+        void tick_shouldChangeTheGridAsExpected(Case c) {
                 Board board = new Board(4, 5);
                 board.seed(c.seed);
-                assertEquals(c.boardBefore, board.getVisualGrid());
+                assertThat(board.getVisualGrid(), is(c.boardBefore));
+
                 board.tick();
-                assertEquals(c.expextedBoardAfter, board.getVisualGrid());
+
+                assertThat(board.getVisualGrid(), is(c.expextedBoardAfter));
         }
 
         static Stream<Case> eightNeighbours() {

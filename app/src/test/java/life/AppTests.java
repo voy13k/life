@@ -1,6 +1,8 @@
 package life;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.blankOrNullString;
+import static org.hamcrest.Matchers.containsString;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
@@ -71,13 +73,13 @@ public class AppTests {
     }
 
     private void assertOut(String expText) {
-        assertTrue(outCaptor.toString().contains(expText));
-        assertTrue(errCaptor.toString().isBlank());
+        assertThat(outCaptor.toString(), containsString(expText));
+        assertThat(errCaptor.toString(), blankOrNullString());
     }
 
     private void assertErr(String expText) {
-        assertTrue(errCaptor.toString().contains(expText));
-        assertTrue(outCaptor.toString().isBlank());
+        assertThat(outCaptor.toString(), blankOrNullString());
+        assertThat(errCaptor.toString(), containsString(expText));
     }
 
 }

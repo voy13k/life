@@ -1,8 +1,10 @@
 package life;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.hasToString;
+import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -16,46 +18,46 @@ class BoardTest {
 
     @Test
     void getVisualGrid_shouldShowBlankGridOfRightSize() {
-        assertEquals("""
+        assertThat(board.getVisualGrid(), is("""
                 [   ]
                 [   ]
                 [   ]
                 [   ]
-                """, board.getVisualGrid());
+                """));
     }
 
     @Test
     void getVisualGrid_shouldShowLiveCellPositions() {
         board.seed("[[2,3],[3,1],[4,2]]");
-        assertEquals("""
+        assertThat(board.getVisualGrid(), is("""
                 [   ]
                 [  X]
                 [X  ]
                 [ X ]
-                """, board.getVisualGrid());
+                """));
     }
 
     @Test
     void toString_shouldRetrunNoLiveCellsIfNotSeeded() {
-        assertEquals("[]", board.toString());
+        assertThat(board, hasToString("[]"));
     }
 
     @Test
     void toString_shouldReturnSeededCells() {
         board.seed("[[2,3],[3,1]]");
-        assertEquals("[[2,3], [3,1]]", board.toString());
+        assertThat(board, hasToString("[[2,3], [3,1]]"));
     }
 
     @Test
     void toString_shouldOrderByRowFirst() {
         board.seed("[[3,1],[2,3]]");
-        assertEquals("[[2,3], [3,1]]", board.toString());
+        assertThat(board, hasToString("[[2,3], [3,1]]"));
     }
 
     @ParameterizedTest()
     @ValueSource(strings = {
-            "[[1,0]]",
-            "[[1,4]]",
+            "[[1, 0]]",
+            "[[1, 4]]",
             "[[0,1]]",
             "[[5,1]]"
     })
@@ -64,7 +66,7 @@ class BoardTest {
                 () -> {
                     board.seed(seed);
                 });
-        assertTrue(exception.getMessage().contains(seed));
+        assertThat(exception.getMessage(), containsString(seed));
     }
 
 }
