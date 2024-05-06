@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.List;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullSource;
@@ -18,8 +20,8 @@ public class PositionTests {
 
     @Test
     void parseShouldTranslateToZeroBasedIndices() {
-        Position[] positions = Position.parse("[[3, 5]]");
-        assertEquals(new Position(2, 4), positions[0]);
+        List<?> positions = Position.parse("[[3, 5]]");
+        assertEquals(new Position(2, 4), positions.get(0));
     }
 
     @ParameterizedTest
@@ -52,11 +54,11 @@ public class PositionTests {
             " [ [ 2, 4 ] , [ 3 , 1 ] , [ 2 , 5 ] ] "
     })
     void parseShouldIgnoreSpaces(String seed) {
-        Position[] positions = Position.parse(seed);
-        assertEquals(3, positions.length);
-        assertEquals("[2,4]", positions[0].toString());
-        assertEquals("[3,1]", positions[1].toString());
-        assertEquals("[2,5]", positions[2].toString());
+        List<?> positions = Position.parse(seed);
+        assertEquals(3, positions.size());
+        assertEquals("[2,4]", positions.get(0).toString());
+        assertEquals("[3,1]", positions.get(1).toString());
+        assertEquals("[2,5]", positions.get(2).toString());
     }
 
 }

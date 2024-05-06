@@ -45,8 +45,7 @@ public class Board {
      * @param seed in the form of "[[a, b], [c, d], ...]"
      */
     public void seed(String seed) {
-        Position[] positions = Position.parse(seed);
-        Arrays.stream(positions).forEach(p -> {
+        Position.parse(seed).stream().forEach(p -> {
             if (!inRange(p.row(), p.col())) {
                 throw new OutOfRangeException(seed, p);
             }

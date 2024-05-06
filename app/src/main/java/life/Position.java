@@ -1,6 +1,7 @@
 package life;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.json.JSONArray;
 
@@ -35,7 +36,7 @@ public record Position(int row, int col) {
      * @return array of Position objects with 0 based coords,
      *         e.g. { Position(0, 2), Position(2, 3) }
      */
-    public static Position[] parse(String seed) {
+    public static List<Position> parse(String seed) {
         var positions = new ArrayList<Position>();
         try {
             new JSONArray(seed).forEach(obj -> {
@@ -52,7 +53,7 @@ public record Position(int row, int col) {
         } catch (Exception e) {
             throw new IlegalSeedException(seed, e);
         }
-        return positions.toArray(Position[]::new);
+        return positions;
     }
 
     /**
