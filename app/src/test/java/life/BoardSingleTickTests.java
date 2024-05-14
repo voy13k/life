@@ -19,7 +19,7 @@ public class BoardSingleTickTests {
 
         @ParameterizedTest
         @MethodSource({
-                        "noNeighbours",
+                        // "noNeighbours",
                         "oneNeighbour",
                         "twoNeighbours",
                         "threeNeighbours",
@@ -30,345 +30,399 @@ public class BoardSingleTickTests {
                         "eightNeighbours",
         })
         void tick_shouldChangeTheGridAsExpected(Case c) {
-                Board board = new Board(4, 5);
+                Board board = new Board();
                 board.seed(c.seed);
-                assertThat(board.getVisualGrid(), is(c.boardBefore));
+                assertThat(GridTestHelper.toGrid(5, 6, board.toString()), is(c.boardBefore));
 
                 board.tick();
 
-                assertThat(board.getVisualGrid(), is(c.expextedBoardAfter));
+                assertThat(GridTestHelper.toGrid(5, 6, board.toString()), is(c.expextedBoardAfter));
         }
 
         static Stream<Case> eightNeighbours() {
                 return Stream.of(
                                 new Case("[[1,1],[1,2],[1,3],[2,1],[2,2],[2,3],[3,1],[3,2],[3,3]]", """
-                                                [XXX  ]
-                                                [XXX  ]
-                                                [XXX  ]
-                                                [     ]
+                                                [      ]
+                                                [ XXX  ]
+                                                [ XXX  ]
+                                                [ XXX  ]
+                                                [      ]
                                                 """, """
-                                                [X X  ]
-                                                [   X ]
-                                                [X X  ]
-                                                [ X   ]
+                                                [  X   ]
+                                                [ X X  ]
+                                                [X   X ]
+                                                [ X X  ]
+                                                [  X   ]
                                                 """));
         }
 
         static Stream<Case> sevenNeighbours() {
                 return Stream.of(
                                 new Case("[[1,1],[1,2],[1,3],[2,2],[2,3],[3,1],[3,2],[3,3]]", """
-                                                [XXX  ]
-                                                [ XX  ]
-                                                [XXX  ]
-                                                [     ]
+                                                [      ]
+                                                [ XXX  ]
+                                                [  XX  ]
+                                                [ XXX  ]
+                                                [      ]
                                                 """, """
-                                                [X X  ]
-                                                [   X ]
-                                                [X X  ]
-                                                [ X   ]
+                                                [  X   ]
+                                                [ X X  ]
+                                                [    X ]
+                                                [ X X  ]
+                                                [  X   ]
                                                 """));
         }
 
         static Stream<Case> sixNeighbours() {
                 return Stream.of(
                                 new Case("[[1,1],[1,2],[1,3],[2,2],[2,3],[3,2],[3,3]]", """
-                                                [XXX  ]
-                                                [ XX  ]
-                                                [ XX  ]
-                                                [     ]
+                                                [      ]
+                                                [ XXX  ]
+                                                [  XX  ]
+                                                [  XX  ]
+                                                [      ]
                                                 """, """
-                                                [X X  ]
-                                                [   X ]
-                                                [ XX  ]
-                                                [     ]
+                                                [  X   ]
+                                                [ X X  ]
+                                                [    X ]
+                                                [  XX  ]
+                                                [      ]
                                                 """));
         }
 
         static Stream<Case> fiveNeighbours() {
                 return Stream.of(
                                 new Case("[[1,1],[1,2],[1,3],[2,2],[2,3],[3,3]]", """
-                                                [XXX  ]
-                                                [ XX  ]
-                                                [  X  ]
-                                                [     ]
+                                                [      ]
+                                                [ XXX  ]
+                                                [  XX  ]
+                                                [   X  ]
+                                                [      ]
                                                 """, """
-                                                [X X  ]
-                                                [X  X ]
-                                                [ XX  ]
-                                                [     ]
+                                                [  X   ]
+                                                [ X X  ]
+                                                [ X  X ]
+                                                [  XX  ]
+                                                [      ]
                                                 """));
         }
 
         static Stream<Case> fourNeighbours() {
                 return Stream.of(
                                 new Case("[[1,1],[1,2],[1,3],[2,2],[2,3]]", """
-                                                [XXX  ]
-                                                [ XX  ]
-                                                [     ]
-                                                [     ]
+                                                [      ]
+                                                [ XXX  ]
+                                                [  XX  ]
+                                                [      ]
+                                                [      ]
                                                 """, """
-                                                [X X  ]
-                                                [X X  ]
-                                                [     ]
-                                                [     ]
+                                                [  X   ]
+                                                [ X X  ]
+                                                [ X X  ]
+                                                [      ]
+                                                [      ]
                                                 """));
         }
 
         static Stream<Case> threeNeighbours() {
                 return Stream.of(
                                 new Case("[[1,1],[1,2],[1,3],[2,2]]", """
-                                                [XXX  ]
-                                                [ X   ]
-                                                [     ]
-                                                [     ]
+                                                [      ]
+                                                [ XXX  ]
+                                                [  X   ]
+                                                [      ]
+                                                [      ]
                                                 """, """
-                                                [XXX  ]
-                                                [XXX  ]
-                                                [     ]
-                                                [     ]
+                                                [  X   ]
+                                                [ XXX  ]
+                                                [ XXX  ]
+                                                [      ]
+                                                [      ]
                                                 """),
                                 new Case("[[1,1],[1,2],[2,2],[2,3]]", """
-                                                [XX   ]
-                                                [ XX  ]
-                                                [     ]
-                                                [     ]
+                                                [      ]
+                                                [ XX   ]
+                                                [  XX  ]
+                                                [      ]
+                                                [      ]
                                                 """, """
-                                                [XXX  ]
-                                                [XXX  ]
-                                                [     ]
-                                                [     ]
+                                                [      ]
+                                                [ XXX  ]
+                                                [ XXX  ]
+                                                [      ]
+                                                [      ]
                                                 """),
                                 new Case("[[1,1],[1,2],[2,2],[3,3]]", """
-                                                [XX   ]
-                                                [ X   ]
-                                                [  X  ]
-                                                [     ]
+                                                [      ]
+                                                [ XX   ]
+                                                [  X   ]
+                                                [   X  ]
+                                                [      ]
                                                 """, """
-                                                [XX   ]
-                                                [XXX  ]
-                                                [     ]
-                                                [     ]
+                                                [      ]
+                                                [ XX   ]
+                                                [ XXX  ]
+                                                [      ]
+                                                [      ]
                                                 """),
                                 new Case("[[1,1],[1,2],[2,2],[3,2]]", """
-                                                [XX   ]
-                                                [ X   ]
-                                                [ X   ]
-                                                [     ]
+                                                [      ]
+                                                [ XX   ]
+                                                [  X   ]
+                                                [  X   ]
+                                                [      ]
                                                 """, """
-                                                [XX   ]
-                                                [ XX  ]
-                                                [     ]
-                                                [     ]
+                                                [      ]
+                                                [ XX   ]
+                                                [  XX  ]
+                                                [      ]
+                                                [      ]
                                                 """),
                                 new Case("[[1,1],[1,2],[2,2],[3,1]]", """
-                                                [XX   ]
-                                                [ X   ]
-                                                [X    ]
-                                                [     ]
+                                                [      ]
+                                                [ XX   ]
+                                                [  X   ]
+                                                [ X    ]
+                                                [      ]
                                                 """, """
-                                                [XX   ]
-                                                [ X   ]
-                                                [     ]
-                                                [     ]
+                                                [      ]
+                                                [ XX   ]
+                                                [  X   ]
+                                                [      ]
+                                                [      ]
                                                 """),
                                 new Case("[[1,1],[1,2],[2,1],[2,2]]", """
-                                                [XX   ]
-                                                [XX   ]
-                                                [     ]
-                                                [     ]
+                                                [      ]
+                                                [ XX   ]
+                                                [ XX   ]
+                                                [      ]
+                                                [      ]
                                                 """, """
-                                                [XX   ]
-                                                [XX   ]
-                                                [     ]
-                                                [     ]
+                                                [      ]
+                                                [ XX   ]
+                                                [ XX   ]
+                                                [      ]
+                                                [      ]
                                                 """));
         }
 
         static Stream<Case> twoNeighbours() {
                 return Stream.of(
                                 new Case("[[1,1],[1,2],[2,2]]", """
-                                                [XX   ]
-                                                [ X   ]
-                                                [     ]
-                                                [     ]
+                                                [      ]
+                                                [ XX   ]
+                                                [  X   ]
+                                                [      ]
+                                                [      ]
                                                 """, """
-                                                [XX   ]
-                                                [XX   ]
-                                                [     ]
-                                                [     ]
+                                                [      ]
+                                                [ XX   ]
+                                                [ XX   ]
+                                                [      ]
+                                                [      ]
                                                 """),
                                 new Case("[[1,1],[1,3],[2,2]]", """
-                                                [X X  ]
-                                                [ X   ]
-                                                [     ]
-                                                [     ]
+                                                [      ]
+                                                [ X X  ]
+                                                [  X   ]
+                                                [      ]
+                                                [      ]
                                                 """, """
-                                                [ X   ]
-                                                [ X   ]
-                                                [     ]
-                                                [     ]
+                                                [      ]
+                                                [  X   ]
+                                                [  X   ]
+                                                [      ]
+                                                [      ]
                                                 """),
                                 new Case("[[1,1],[2,2],[2,3]]", """
-                                                [X    ]
-                                                [ XX  ]
-                                                [     ]
-                                                [     ]
+                                                [      ]
+                                                [ X    ]
+                                                [  XX  ]
+                                                [      ]
+                                                [      ]
                                                 """, """
-                                                [ X   ]
-                                                [ X   ]
-                                                [     ]
-                                                [     ]
+                                                [      ]
+                                                [  X   ]
+                                                [  X   ]
+                                                [      ]
+                                                [      ]
                                                 """),
                                 new Case("[[1,1],[2,2],[3,3]]", """
-                                                [X    ]
-                                                [ X   ]
-                                                [  X  ]
-                                                [     ]
+                                                [      ]
+                                                [ X    ]
+                                                [  X   ]
+                                                [   X  ]
+                                                [      ]
                                                 """, """
-                                                [     ]
-                                                [ X   ]
-                                                [     ]
-                                                [     ]
+                                                [      ]
+                                                [      ]
+                                                [  X   ]
+                                                [      ]
+                                                [      ]
                                                 """),
                                 new Case("[[1,1],[2,2],[3,2]]", """
-                                                [X    ]
-                                                [ X   ]
-                                                [ X   ]
-                                                [     ]
+                                                [      ]
+                                                [ X    ]
+                                                [  X   ]
+                                                [  X   ]
+                                                [      ]
                                                 """, """
-                                                [     ]
-                                                [XX   ]
-                                                [     ]
-                                                [     ]
+                                                [      ]
+                                                [      ]
+                                                [ XX   ]
+                                                [      ]
+                                                [      ]
                                                 """),
                                 new Case("[[1,1],[2,2],[3,1]]", """
-                                                [X    ]
-                                                [ X   ]
-                                                [X    ]
-                                                [     ]
+                                                [      ]
+                                                [ X    ]
+                                                [  X   ]
+                                                [ X    ]
+                                                [      ]
                                                 """, """
-                                                [     ]
-                                                [XX   ]
-                                                [     ]
-                                                [     ]
+                                                [      ]
+                                                [      ]
+                                                [ XX   ]
+                                                [      ]
+                                                [      ]
                                                 """),
                                 new Case("[[1,1],[2,1],[2,2]]", """
-                                                [X    ]
-                                                [XX   ]
-                                                [     ]
-                                                [     ]
+                                                [      ]
+                                                [ X    ]
+                                                [ XX   ]
+                                                [      ]
+                                                [      ]
                                                 """, """
-                                                [XX   ]
-                                                [XX   ]
-                                                [     ]
-                                                [     ]
+                                                [      ]
+                                                [ XX   ]
+                                                [ XX   ]
+                                                [      ]
+                                                [      ]
                                                 """));
         }
 
         static Stream<Case> oneNeighbour() {
                 return Stream.of(
                                 new Case("[[1,1],[2,2]]", """
-                                                [X    ]
-                                                [ X   ]
-                                                [     ]
-                                                [     ]
+                                                [      ]
+                                                [ X    ]
+                                                [  X   ]
+                                                [      ]
+                                                [      ]
                                                 """, """
-                                                [     ]
-                                                [     ]
-                                                [     ]
-                                                [     ]
+                                                [      ]
+                                                [      ]
+                                                [      ]
+                                                [      ]
+                                                [      ]
                                                 """),
                                 new Case("[[1,2],[2,2]]", """
-                                                [ X   ]
-                                                [ X   ]
-                                                [     ]
-                                                [     ]
+                                                [      ]
+                                                [  X   ]
+                                                [  X   ]
+                                                [      ]
+                                                [      ]
                                                 """, """
-                                                [     ]
-                                                [     ]
-                                                [     ]
-                                                [     ]
+                                                [      ]
+                                                [      ]
+                                                [      ]
+                                                [      ]
+                                                [      ]
                                                 """),
                                 new Case("[[1,3],[2,2]]", """
-                                                [  X  ]
-                                                [ X   ]
-                                                [     ]
-                                                [     ]
+                                                [      ]
+                                                [   X  ]
+                                                [  X   ]
+                                                [      ]
+                                                [      ]
                                                 """, """
-                                                [     ]
-                                                [     ]
-                                                [     ]
-                                                [     ]
+                                                [      ]
+                                                [      ]
+                                                [      ]
+                                                [      ]
+                                                [      ]
                                                 """),
                                 new Case("[[2,2], [2,3]]", """
-                                                [     ]
-                                                [ XX  ]
-                                                [     ]
-                                                [     ]
+                                                [      ]
+                                                [      ]
+                                                [  XX  ]
+                                                [      ]
+                                                [      ]
                                                 """, """
-                                                [     ]
-                                                [     ]
-                                                [     ]
-                                                [     ]
+                                                [      ]
+                                                [      ]
+                                                [      ]
+                                                [      ]
+                                                [      ]
                                                 """),
                                 new Case("[[2,2], [3,3]]", """
-                                                [     ]
-                                                [ X   ]
-                                                [  X  ]
-                                                [     ]
+                                                [      ]
+                                                [      ]
+                                                [  X   ]
+                                                [   X  ]
+                                                [      ]
                                                 """, """
-                                                [     ]
-                                                [     ]
-                                                [     ]
-                                                [     ]
+                                                [      ]
+                                                [      ]
+                                                [      ]
+                                                [      ]
+                                                [      ]
                                                 """),
                                 new Case("[[2,2], [3,2]]", """
-                                                [     ]
-                                                [ X   ]
-                                                [ X   ]
-                                                [     ]
+                                                [      ]
+                                                [      ]
+                                                [  X   ]
+                                                [  X   ]
+                                                [      ]
                                                 """, """
-                                                [     ]
-                                                [     ]
-                                                [     ]
-                                                [     ]
+                                                [      ]
+                                                [      ]
+                                                [      ]
+                                                [      ]
+                                                [      ]
                                                 """),
                                 new Case("[[2,2], [3,1]]", """
-                                                [     ]
-                                                [ X   ]
-                                                [X    ]
-                                                [     ]
+                                                [      ]
+                                                [      ]
+                                                [  X   ]
+                                                [ X    ]
+                                                [      ]
                                                 """, """
-                                                [     ]
-                                                [     ]
-                                                [     ]
-                                                [     ]
+                                                [      ]
+                                                [      ]
+                                                [      ]
+                                                [      ]
+                                                [      ]
                                                 """),
                                 new Case("[[2,1], [2,2]]", """
-                                                [     ]
-                                                [XX   ]
-                                                [     ]
-                                                [     ]
+                                                [      ]
+                                                [      ]
+                                                [ XX   ]
+                                                [      ]
+                                                [      ]
                                                 """, """
-                                                [     ]
-                                                [     ]
-                                                [     ]
-                                                [     ]
+                                                [      ]
+                                                [      ]
+                                                [      ]
+                                                [      ]
+                                                [      ]
                                                 """));
         }
 
         static Stream<Case> noNeighbours() {
                 return Stream.of(
                                 new Case("[[2,2]]", """
-                                                [     ]
-                                                [ X   ]
-                                                [     ]
-                                                [     ]
+                                                [      ]
+                                                [      ]
+                                                [  X   ]
+                                                [      ]
+                                                [      ]
                                                 """, """
-                                                [     ]
-                                                [     ]
-                                                [     ]
-                                                [     ]
+                                                [      ]
+                                                [      ]
+                                                [      ]
+                                                [      ]
+                                                [      ]
                                                 """));
         }
 

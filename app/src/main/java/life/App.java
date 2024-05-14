@@ -16,19 +16,15 @@ import java.util.stream.IntStream;
 public class App {
 
     private static final int NUMBER_OF_CYCLES = 100;
-    private static final int BOARD_HEIGHT = 200;
-    private static final int BOARD_WIDTH = 200;
 
     public static void main(String[] args) {
-        Board board = new Board(BOARD_HEIGHT, BOARD_WIDTH);
+        Board board = new Board();
         try {
             board.seed(String.join(" ", args));
         } catch (IlegalSeedException e) {
             System.err.printf(
-                    "%s Coordinates expected in the form of \"[[m,n],[o,p],...]\" wthin the [1..%d, 1..%d] range, inclusive.",
-                    e.getMessage(),
-                    BOARD_HEIGHT,
-                    BOARD_WIDTH);
+                    "%s Coordinates expected in the form of \"[[m,n],[o,p],...]\"",
+                    e.getMessage());
             return;
         }
 

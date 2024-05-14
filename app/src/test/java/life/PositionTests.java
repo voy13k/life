@@ -1,13 +1,13 @@
 package life;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.hasToString;
-import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import java.util.List;
+import java.util.Set;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -18,12 +18,13 @@ public class PositionTests {
 
     @Test
     void toString_shouldTranslateToOneBasedCoordinates() {
-        assertThat(new Position(2, 4), hasToString("[3,5]"));
+        assertThat(new Position(2, 4), hasToString("[2,4]"));
     }
 
     @Test
     void parse_shouldTranslateToZeroBasedIndices() {
-        assertThat(Position.parse("[[3, 5]]").get(0), is(new Position(2, 4)));
+        Set<Position> actual = Position.parse("[[3, 5]]");
+        assertThat(actual, contains(new Position(3, 5)));
     }
 
     @ParameterizedTest
@@ -56,11 +57,11 @@ public class PositionTests {
             " [ [ 2, 4 ] , [ 3 , 1 ] , [ 2 , 5 ] ] "
     })
     void parseShouldIgnoreSpaces(String seed) {
-        List<?> positions = Position.parse(seed);
-        assertThat(positions, hasSize(3));
-        assertThat(positions.get(0), hasToString("[2,4]"));
-        assertThat(positions.get(1), hasToString("[3,1]"));
-        assertThat(positions.get(2), hasToString("[2,5]"));
+        Set<?> positions = Position.parse(seed);
+        assertThat(positions, containsInAnyOrder(
+                new Position(2, 4),
+                new Position(3, 1),
+                new Position(2, 5)));
     }
 
 }

@@ -1,7 +1,8 @@
 package life;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Construct a playboard specifying its height and width.
@@ -20,22 +21,7 @@ import java.util.Arrays;
 public class Board {
 
     // true means alive, false means dead.
-    private boolean grid[][]; // [rows][cols]
-
-    // handy for inRange checks later
-    private int rows;
-    private int cols;
-
-    public Board(int rows, int cols) {
-        this.rows = rows;
-        this.cols = cols;
-
-        grid = newGrid();
-    }
-
-    private boolean[][] newGrid() {
-        return new boolean[this.rows][this.cols];
-    }
+    private Set<Position> aliveCells = new HashSet<>();
 
     /**
      * Set the provided cells alive.
@@ -45,23 +31,7 @@ public class Board {
      * @param seed in the form of "[[a, b], [c, d], ...]"
      */
     public void seed(String seed) {
-        Position.parse(seed).stream().forEach(p -> {
-            if (!inRange(p.row(), p.col())) {
-                throw new OutOfRangeException(seed, p);
-            }
-            grid[p.row()][p.col()] = true;
-        });
-    }
-
-    private boolean inRange(int row, int col) {
-        return row >= 0 && row < this.rows &&
-                col >= 0 && col < this.cols;
-    }
-
-    class OutOfRangeException extends IlegalSeedException {
-        public OutOfRangeException(String seed, Position position) {
-            super("\"" + seed + "\", out of range position " + position);
-        }
+        aliveCells.addAll(Position.parse(seed));
     }
 
     /**
@@ -72,52 +42,44 @@ public class Board {
      */
     @Override
     public String toString() {
-        var livePositions = new ArrayList<Position>();
-        walkGridRange((row, col) -> {
-            if (grid[row][col]) {
-                // Cell.toString() will add [ ] around individual position coords
-                livePositions.add(new Position(row, col));
-            }
+        var cellStrings = new ArrayList<String>();
+        aliveCells.stream().forEach(cell -> {
+            cellStrings.add(cell.toString());
         });
-        // List.toString() will add outer [ ]
-        return livePositions.toString();
+        return cellStrings.toString();
     }
 
-    private void walkGridRange(GridRangeWalker walker) {
-        for (int row = 0; row < this.rows; ++row) {
-            for (int col = 0; col < this.cols; ++col) {
-                walker.visit(row, col);
-            }
-        }
-    }
-
-    private interface GridRangeWalker {
-        void visit(int row, int col);
-    }
-
-    /**
-     * Run one life cycle
-     */
     public void tick() {
-        // we need a fresh instance of the grid, so that as we perform the updates
-        // we don't influence procesing of the cells we haven't visited yet
-        boolean[][] newGrid = newGrid();
+        var newGeneration = new HashSet<Position>();
 
-        walkGridRange((row, col) -> {
-            switch (neighbourCount(row, col)) {
-                case 2 -> {
-                    // alive stays alive, dead stays dead
-                    newGrid[row][col] = grid[row][col];
-                }
-                case 3 -> {
-                    // alive stays alive, dead becomes alive
-                    newGrid[row][col] = true;
-                }
-                // all other cases die, so no action, newGrid cells are dead by default.
-            }
+        aliveCells.stream().forEach(cell -> {
+            maybeSetAlive(new Position(cell.row() - 1, cell.col() - 1), newGeneration);
+            maybeSetAlive(new Position(cell.row() - 1, cell.col()), newGeneration);
+            maybeSetAlive(new Position(cell.row() - 1, cell.col() + 1), newGeneration);
+            maybeSetAlive(new Position(cell.row(), cell.col() - 1), newGeneration);
+            maybeSetAlive(cell, newGeneration);
+            maybeSetAlive(new Position(cell.row(), cell.col() + 1), newGeneration);
+            maybeSetAlive(new Position(cell.row() + 1, cell.col() - 1), newGeneration);
+            maybeSetAlive(new Position(cell.row() + 1, cell.col()), newGeneration);
+            maybeSetAlive(new Position(cell.row() + 1, cell.col() + 1), newGeneration);
         });
-        // Only now we can "commit" all the changes at once
-        grid = newGrid;
+
+        aliveCells = newGeneration;
+    }
+
+    private void maybeSetAlive(Position cell, HashSet<Position> newGeneration) {
+        switch (neighbourCount(cell.row(), cell.col())) {
+            case 2 -> {
+                // alive stays alive, dead stays dead
+                if (aliveCells.contains(cell)) {
+                    newGeneration.add(cell);
+                }
+            }
+            case 3 -> {
+                newGeneration.add(cell);
+            }
+            // all other cases die, so no action, newGrid cells are dead by default.
+        }
     }
 
     private int neighbourCount(int row, int col) {
@@ -132,35 +94,7 @@ public class Board {
     }
 
     private int oneIfAlive(int row, int col) {
-        return inRange(row, col) && grid[row][col] ? 1 : 0;
-    }
-
-    /**
-     * <p>
-     * Print the current state of the board as a rectangle,
-     * representing live cells by 'X'.
-     * </p>
-     * e.g. a Board(4,5) with 4 live cell positions [[1,3], [1,4], [2,3], [4,2]]:
-     * will produce
-     * <p/> Primarily meant to facilitate test case construction
-     * 
-     * <pre>
-     *[  XX ]
-     *[  X  ]
-     *[     ]
-     *[ X   ]
-     * </pre>
-     */
-    String getVisualGrid() {
-        var builder = new StringBuilder();
-        Arrays.stream(grid).forEach(rowArr -> {
-            builder.append("[");
-            for (boolean val : rowArr) {
-                builder.append(val ? "X" : " ");
-            }
-            builder.append("]\n");
-        });
-        return builder.toString();
+        return aliveCells.contains(new Position(row, col)) ? 1 : 0;
     }
 
 }

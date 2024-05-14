@@ -3,6 +3,7 @@ package life;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.blankOrNullString;
 import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.is;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
@@ -48,7 +49,16 @@ public class AppTests {
     @Test
     void shouldUseTheSeed() {
         main("[[1, 1], [1, 2], [2, 1]]");
-        assertOut(" 100: [[1,1], [1,2], [2,1], [2,2]]");
+        assertOut("""
+                [        ]
+                [ XX     ]
+                [ XX     ]
+                [        ]
+                [        ]
+                [        ]
+                [        ]
+                [        ]
+                """);
     }
 
     @Test
@@ -59,13 +69,31 @@ public class AppTests {
                 " [1,2], [",
                 "2,1], [2,2",
                 "]]");
-        assertOut(" 100: [[1,1], [1,2], [2,1], [2,2]]");
+        assertOut("""
+                [        ]
+                [ XX     ]
+                [ XX     ]
+                [        ]
+                [        ]
+                [        ]
+                [        ]
+                [        ]
+                """);
     }
 
     @Test
     void shouldSatisfySetRequirement() {
         main("[[5, 5], [6, 5], [7, 5], [5, 6], [6, 6], [7, 6]]");
-        assertOut(" 100: [[5,5], [5,6], [6,4], [6,7], [7,5], [7,6]]");
+        assertOut("""
+                [        ]
+                [        ]
+                [        ]
+                [        ]
+                [        ]
+                [     XX ]
+                [    X  X]
+                [     XX ]
+                """);
     }
 
     private void main(String... args) {
@@ -73,7 +101,11 @@ public class AppTests {
     }
 
     private void assertOut(String expText) {
-        assertThat(outCaptor.toString(), containsString(expText));
+        String output = outCaptor.toString().lines()
+                .filter(l -> l.contains(" 100:"))
+                .map(l -> l.split(":")[1])
+                .findFirst().get();
+        assertThat(GridTestHelper.toGrid(8, 8, output), is(expText));
         assertThat(errCaptor.toString(), blankOrNullString());
     }
 

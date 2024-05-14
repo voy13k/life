@@ -1,26 +1,21 @@
 package life;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.json.JSONArray;
 
 /**
  * <p>
- * Converts between in / out coordinate representation (1-based coordinates)
- * and internal representation (0-based array indexes).
+ * Wraps the cell coordinates so that it cab be uased as a key
  * </p>
  * 
- * The {@link #parse(String)} converts input to internal,
- * the {@link #toString()} converts internal to output.
+ * The {@link #parse(String)} converts input string set of Coord objects,
+ * the {@link #toString()} produces the ouput format of [row, col].
  */
 public record Position(int row, int col) {
 
     /**
-     * Convert the input string containing 1-based coordinate pairs
-     * into an array of Positions with 0-based coordinates.
-     * E.g.
-     * 
      * <pre>
      * parse("[[1, 3], [3, 4]]")
      * </pre>
@@ -28,16 +23,14 @@ public record Position(int row, int col) {
      * results in
      * 
      * <pre>
-     * new Position[] { Position(0, 2), Position(2, 3) }
+     * set of { Position(1, 3), Position(3, 4) }
      * </pre>
      * 
-     * @param seed JSON like array of arrays, e.g. "[[1, 3], [3, 4]]", 1-based coord
-     *             pairs
-     * @return array of Position objects with 0 based coords,
-     *         e.g. { Position(0, 2), Position(2, 3) }
+     * @param seed JSON like array of arrays, e.g. "[[1, 3], [3, 4]]" coord pairs
+     * @return set of Position, e.g { Position(1, 3), Position(3, 4) }
      */
-    public static List<Position> parse(String seed) {
-        var positions = new ArrayList<Position>();
+    public static Set<Position> parse(String seed) {
+        var positions = new HashSet<Position>();
         try {
             new JSONArray(seed).forEach(obj -> {
                 if (!(obj instanceof JSONArray coordArr)) {
@@ -48,7 +41,7 @@ public record Position(int row, int col) {
                 }
                 int inputRow = coordArr.getInt(0);
                 int inputCol = coordArr.getInt(1);
-                positions.add(new Position(inputRow - 1, inputCol - 1));
+                positions.add(new Position(inputRow, inputCol));
             });
         } catch (Exception e) {
             throw new IlegalSeedException(seed, e);
@@ -57,11 +50,11 @@ public record Position(int row, int col) {
     }
 
     /**
-     * Produce "[row + 1, col + 1]" output coordinate tuple
+     * Produce "[row, col]" output coordinate tuple string
      */
     @Override
     public final String toString() {
-        return new JSONArray(new int[] { row + 1, col + 1 }).toString();
+        return new JSONArray(new int[] { row, col}).toString();
     }
 }
 
